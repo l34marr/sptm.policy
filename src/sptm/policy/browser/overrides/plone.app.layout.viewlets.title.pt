@@ -1,0 +1,5 @@
+<tal:block define="state context/@@plone_context_state;
+ is_home python:state.is_portal_root() and state.is_default_page()">
+<title tal:condition="python: not is_home" tal:content="structure view/site_title">Site Title</title>
+<title tal:condition="python: is_home" tal:content="string:社區GIS研究計畫：空間視野與地方知識">Site Title</title>
+</tal:block>

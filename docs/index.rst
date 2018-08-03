@@ -1,0 +1,3 @@
+===========sptm.policy
+===========
+User documentation

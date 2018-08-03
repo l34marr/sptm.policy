@@ -1,0 +1,6 @@
+[report]
+include =
+    src/sptm/*
+omit =
+    */test*
+    */upgrades/*

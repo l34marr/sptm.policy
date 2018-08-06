@@ -10,12 +10,12 @@
 <metal:content-core fill-slot="content-core">
 
 <tal:fldrmap repeat="fldr view/fldrmap">
-<h1 tal:content="python: fldr[0]">Folder</h1>
+<h1 tal:condition="python: len(view.latest(fldr)) > 0" tal:content="python: fldr[0]">Folder</h1>
 
 <tal:block define="fldritms python: view.latest(fldr)"
  tal:repeat="item fldritms">
 
-  <article class="tileItem"
+  <article class="tileItem" style="min-height: 150px"
    tal:define="obj item/getObject;
                item_title item/Title;
                item_description item/Description;
@@ -24,6 +24,16 @@
                item_has_image python:item.getIcon;
                item_link python:item_type in view.use_view_action and item_url+'/view' or item_url;">
 
+    <div class="tileImage" style="float: left"
+     tal:attributes="class python: 'tileImage' if item_description else 'tileImageNoFloat'">
+      <a tal:attributes="href item_link">
+        <img tal:define="scales obj/@@images;
+                         scale python:scales.scale('image', 'mini');
+                         item_img string:'<img width=200 src=http://cgis.rchss.sinica.edu.tw/++theme++sptm/static/default.jpg />'"
+         tal:replace="structure python:scale and scale.tag() or item_img" />
+      </a>
+    </div>
+
     <h2 class="tileHeadline">
       <a class="summary url"
        tal:attributes="href item_link;
@@ -31,15 +41,6 @@
        tal:content="item_title">
        Item Title</a>
     </h2>
-    <div class="tileImage"
-     tal:condition="item_has_image"
-     tal:attributes="class python: 'tileImage' if item_description else 'tileImageNoFloat'">
-      <a tal:attributes="href item_link">
-        <img tal:define="scales obj/@@images;
-                         scale python:scales.scale('image', 'thumb')"
-         tal:replace="structure python:scale and scale.tag() or None" />
-      </a>
-    </div>
 
     <div class="tileBody" tal:condition="item_description">
       <span class="description" tal:content="item_description">

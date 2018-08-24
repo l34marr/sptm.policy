@@ -51,12 +51,17 @@
     <div class="tileFooter">
       <a tal:attributes="href item_link">閱讀全文</a>
     </div>
-       
+
     <div class="visualClear"><!-- --></div>
 
   </article>
 
 </tal:block>
+
+<a style="float: right"
+ tal:attributes="href python: 'research/'+fldr[1].lower()"
+ tal:content="python: u'更多'+fldr[0]">Read More</a>
+<hr>
 
 </tal:fldrmap>
 

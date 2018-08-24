@@ -37,5 +37,5 @@ class HeadLineView(CollectionView):
                        path=path,
                        sort_on='created',
                        sort_order='reverse',
-                       sort_limit=5)[:5]
+                       sort_limit=3)[:3]
 

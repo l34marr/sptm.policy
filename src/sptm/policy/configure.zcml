@@ -54,4 +54,8 @@
 
   <!-- -*- extra stuff goes here -*- -->
 
+  <adapter name="ctgr" factory=".indexers.ctgr_activity" />
+  <adapter name="ctgr" factory=".indexers.ctgr_research" />
+  <adapter name="ctgr" factory=".indexers.ctgr_project" />
+
 </configure>

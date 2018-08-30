@@ -7,8 +7,33 @@
  i18n:domain="sptm.policy">
 <body>
 
+<metal:title fill-slot="content-title">
+</metal:title>
+<metal:description fill-slot="content-description">
+</metal:description>
+
 <metal:content-core fill-slot="content-core">
 
+<tal:homepage condition="python: context.restrictedTraverse('@@plone_context_state').canonical_object_url().split('/')[-1] == 'home-page'">
+<tal:news define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
+ condition="view/newsitems">
+<h1>站內新聞</h1>
+<div class="eea-preview-items">
+ <div class="photoAlbumEntry" style="width: 340px; height: 140px; margin-right: 20px" tal:repeat="item view/newsitems">
+  <h2 class="photoAlbumEntryTitle" style="min-height: 130px">
+   <a href="#" style="width: 340px; height: 140px"
+    tal:attributes="href item/getURL;"
+    tal:content="item/Title">News Title</a>
+  </h2>
+  <span class="photoAlbumEntryDescription" style="color: black" tal:content="item/Description">News Desc</span>
+  <time class="portletItemDetails"
+   tal:content="python:toLocalizedTime(item.Date)">May 5</time>
+ </div>
+</div>
+</tal:news>
+</tal:homepage>
+
+<tal:research condition="python: context.restrictedTraverse('@@plone_context_state').canonical_object_url().split('/')[-2] == 'research'">
 <tal:fldrmap repeat="fldr view/fldrmap">
 <h1 tal:condition="python: len(view.latest(fldr)) > 0" tal:content="python: fldr[0]">Folder</h1>
 
@@ -64,6 +89,7 @@
 <hr>
 
 </tal:fldrmap>
+</tal:research>
 
 </metal:content-core>
 

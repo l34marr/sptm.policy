@@ -16,6 +16,15 @@ class HeadLineView(CollectionView):
     def __init__(self, *args, **kwargs):
         super(HeadLineView, self).__init__(*args, **kwargs)
 
+    def newsitems(self):
+        context = self.context.aq_inner
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog(portal_type='News Item',
+                       path='mysite/news',
+                       sort_on='created',
+                       sort_order='reverse',
+                       sort_limit=3)[:3]
+
     def fldrmap(self):
         curfldr = self.context.absolute_url().split('/')[-2]
         if curfldr in curmap:

@@ -5,7 +5,8 @@
  xmlns:i18n="http://xml.zope.org/namespaces/i18n"
  metal:use-macro="context/main_template/macros/master"
  i18n:domain="sptm.policy">
-<body>
+<body
+ tal:define="portal_state context/@@plone_portal_state;">
 
 <metal:title fill-slot="content-title">
 </metal:title>
@@ -14,23 +15,121 @@
 
 <metal:content-core fill-slot="content-core">
 
-<tal:homepage condition="python: context.restrictedTraverse('@@plone_context_state').canonical_object_url().split('/')[-1] == 'home-page'">
+<tal:homepage condition="python: context.restrictedTraverse('@@plone_context_state').canonical_object_url().split('/')[-1] == 'cgis.rchss.sinica.edu.tw' or context.restrictedTraverse('@@plone_context_state').canonical_object_url().split('/')[-1] == 'mysite'"
+ tal:define="portal context/@@plone_portal_state/portal;
+             image_scale portal/@@image_scale;">
+<section class="block container">
 <tal:news define="toLocalizedTime nocall:context/@@plone/toLocalizedTime"
  condition="view/newsitems">
-<h1>站內新聞</h1>
-<div class="eea-preview-items">
- <div class="photoAlbumEntry" style="width: 340px; height: 140px; margin-right: 20px" tal:repeat="item view/newsitems">
-  <h2 class="photoAlbumEntryTitle" style="min-height: 130px">
-   <a href="#" style="width: 340px; height: 140px"
+<h1>最新消息</h1>
+<div class="eea-preview-items" style="height: 140px">
+ <div class="photoAlbumEntry" style="width: 340px; height: 100px; margin-right: 20px" tal:repeat="item view/newsitems">
+  <h3 class="photoAlbumEntryTitle" style="min-height: 100px">
+   <a href="#" style="width: 340px; height: 100px"
     tal:attributes="href item/getURL;"
     tal:content="item/Title">News Title</a>
-  </h2>
+  </h3>
   <span class="photoAlbumEntryDescription" style="color: black" tal:content="item/Description">News Desc</span>
   <time class="portletItemDetails"
    tal:content="python:toLocalizedTime(item.Date)">May 5</time>
  </div>
 </div>
 </tal:news>
+<a href="#" style="float: right"
+ tal:attributes="href string:http://cgis.rchss.sinica.edu.tw/news/">更多消息</a>
+</section>
+<section class="block container">
+<tal:cgis condition="view/cgisitems">
+<h1>社區地理資訊系統</h1>
+<div class="row last-child">
+<tal:block repeat="item view/cgisitems">
+ <div class="item span3 type-post format-standard">
+  <div class="frame">
+   <img tal:condition="python: item.getIcon"
+    tal:replace="structure python:image_scale.tag(item, 'image', css_class='pull-right')" />
+  </div>
+  <div class="meta">
+   <h3 class="title">
+   <a href="#"
+    tal:attributes="href item/getURL;
+                    target string:_blank"
+    tal:content="item/Title">Title</a>
+   </h3>
+  </div>
+ </div>
+</tal:block>
+</div>
+</tal:cgis>
+</section>
+<section class="block container">
+<tal:rlgn condition="view/rlgnitems">
+<h1>宗教數位研究平台</h1>
+<div class="row last-child">
+<tal:block repeat="item view/rlgnitems">
+ <div class="item span3 type-post format-standard">
+  <div class="frame">
+   <img tal:condition="python: item.getIcon"
+    tal:replace="structure python:image_scale.tag(item, 'image', css_class='pull-right')" />
+  </div>
+  <div class="meta">
+   <h3 class="title">
+   <a href="#"
+    tal:attributes="href item/getURL;
+                    target string:_blank"
+    tal:content="item/Title">Title</a>
+   </h3>
+  </div>
+ </div>
+</tal:block>
+</div>
+</tal:rlgn>
+</section>
+<section class="block container">
+<tal:dstr condition="view/dstritems">
+<h1>神明的管區</h1>
+<div class="row last-child">
+<tal:block repeat="item view/dstritems">
+ <div class="item span3 type-post format-standard">
+  <div class="frame">
+   <img tal:condition="python: item.getIcon"
+    tal:replace="structure python:image_scale.tag(item, 'image', css_class='pull-right')" />
+  </div>
+  <div class="meta">
+   <h3 class="title">
+   <a href="#"
+    tal:attributes="href item/getURL;
+                    target string:_blank"
+    tal:content="item/Title">Title</a>
+   </h3>
+  </div>
+ </div>
+</tal:block>
+</div>
+</tal:dstr>
+</section>
+<section class="block container">
+<tal:cntr condition="view/cntritems">
+<h1>GIS 專題中心相關系統與網站</h1>
+<div class="row last-child">
+<tal:block repeat="item view/cntritems">
+ <div class="item span3 type-post format-standard">
+  <div class="frame">
+   <img tal:condition="python: item.getIcon"
+    tal:replace="structure python:image_scale.tag(item, 'image', css_class='pull-right')" />
+  </div>
+  <div class="meta">
+   <h3 class="title">
+   <a href="#"
+    tal:attributes="href item/getURL;
+                    target string:_blank"
+    tal:content="item/Title">Title</a>
+   </h3>
+  </div>
+ </div>
+</tal:block>
+</div>
+</tal:cntr>
+</section>
 </tal:homepage>
 
 <tal:research condition="python: context.restrictedTraverse('@@plone_context_state').canonical_object_url().split('/')[-2] == 'research'">
@@ -54,7 +153,7 @@
       <a tal:attributes="href item_link">
         <img tal:define="scales obj/@@images;
                          scale python:scales.scale('image', 'mini');
-                         item_img string:'<img width=200 src=http://cgis.rchss.sinica.edu.tw/++theme++sptm/static/default.jpg />'"
+                         item_img string:'<img width=200 src=http://cgis.rchss.sinica.edu.tw/++plone++sptm.policy/default.jpg />'"
          tal:replace="structure python:scale and scale.tag() or item_img" />
       </a>
     </div>

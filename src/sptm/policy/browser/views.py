@@ -16,6 +16,11 @@ class HeadLineView(CollectionView):
     def __init__(self, *args, **kwargs):
         super(HeadLineView, self).__init__(*args, **kwargs)
 
+    def at_root(self):
+        context = aq_inner(self.context)
+        portal_state = getMultiAdapter((context, self.request), name=u'plone_portal_state')
+        return portal_state.portal_url()
+
     def newsitems(self):
         context = self.context.aq_inner
         catalog = getToolByName(context, 'portal_catalog')
@@ -24,6 +29,42 @@ class HeadLineView(CollectionView):
                        sort_on='created',
                        sort_order='reverse',
                        sort_limit=3)[:3]
+
+    def cgisitems(self):
+        context = self.context.aq_inner
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog(portal_type='Document',
+                       path='mysite/cgis',
+                       sort_on='created',
+                       sort_order='reverse',
+                       sort_limit=4)[:4]
+
+    def rlgnitems(self):
+        context = self.context.aq_inner
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog(portal_type='Document',
+                       path='mysite/religion',
+                       sort_on='created',
+                       sort_order='reverse',
+                       sort_limit=4)[:4]
+
+    def dstritems(self):
+        context = self.context.aq_inner
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog(portal_type='Document',
+                       path='mysite/district',
+                       sort_on='created',
+                       sort_order='reverse',
+                       sort_limit=4)[:4]
+
+    def cntritems(self):
+        context = self.context.aq_inner
+        catalog = getToolByName(context, 'portal_catalog')
+        return catalog(portal_type='Document',
+                       path='mysite/center',
+                       sort_on='created',
+                       sort_order='reverse',
+                       sort_limit=4)[:4]
 
     def fldrmap(self):
         curfldr = self.context.absolute_url().split('/')[-2]

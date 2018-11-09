@@ -11,4 +11,12 @@
     layer="sptm.policy.interfaces.ISptmPolicyLayer"
     permission="zope2.View" />
 
+  <browser:page
+    name="rest_view"
+    for="*"
+    class=".views.RestView"
+    template="rest.pt"
+    layer="sptm.policy.interfaces.ISptmPolicyLayer"
+    permission="zope2.View" />
+
 </configure>

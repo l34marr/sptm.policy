@@ -6,7 +6,8 @@ from Products.CMFCore.utils import getToolByName
 from Products.Five import BrowserView
 from plone.app.contenttypes.browser.collection import CollectionView
 from sptm.policy.interfaces import IHeadLineView
-
+from sptm.policy.interfaces import IRestView
+import requests
 
 curmap = {'research': ((u'活動成果', 'Activity', '/research'), (u'研究成果', 'Research', '/research'), (u'主題成果', 'Project', '/research'))}
 
@@ -88,4 +89,25 @@ class HeadLineView(CollectionView):
                        sort_on='created',
                        sort_order='reverse',
                        sort_limit=3)[:3]
+
+class RestView(BrowserView):
+    implements(IRestView)
+
+    def getData(self):
+        request = self.request
+        b_start = request.get('b_start')
+        url = 'http://crgis.rchss.sinica.edu.tw/@search?fullobjects&portal_type=News%20Item&b_size=10&b_start={}'.format(b_start)
+        data = requests.get(url, headers={'Accept': 'application/json'})
+        return data.json()
+
+    def getNext(self):
+        request = self.request
+        b_start = int(request.get('b_start'))
+        return str(b_start + 10)
+
+    def getPrev(self):
+        request = self.request
+        b_start = int(request.get('b_start'))
+        b_start = b_start - 10 if b_start >= 10 else 0
+        return str(b_start)
 

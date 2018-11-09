@@ -1,0 +1,46 @@
+<html lang="en"
+ xmlns="http://www.w3.org/1999/xhtml" xml:lang="en"
+ xmlns:tal="http://xml.zope.org/namespaces/tal"
+ xmlns:metal="http://xml.zope.org/namespaces/metal"
+ xmlns:i18n="http://xml.zope.org/namespaces/i18n"
+ metal:use-macro="context/main_template/macros/master"
+ i18n:domain="sptm.policy">
+<body>
+
+<metal:content-core fill-slot="content-core">
+
+<style>
+.block_left{
+    float: left;
+}
+.block_right{
+    position: relative;
+}
+.read_more{
+    position: absolute;
+    padding:0 10px;
+    margin-top: 10px;
+}
+.news_container:after{
+    clear: both;
+}
+a{
+    border: none !important;
+}
+</style>
+<a href="${python: view.context.absolute_url()}/@@restnews_view?b_start=${python: view.getPrev()}"
+   tal:condition="python: view.getNext() != '10'">上一頁</a>
+<a href="${python: view.context.absolute_url()}/@@restnews_view?b_start=${python: view.getNext()}">下一頁</a>
+<br><br>
+<div tal:repeat="data python: view.getData()['items']" style='clear:both;margin: 20px 0;position: relative;height:260px'>
+    <img src="${python: data['image']['scales']['mini']['download'] if isinstance(data['image'], dict)  else 'http://cgis.rchss.sinica.edu.tw/++plone++sptm.policy/default.jpg'}"
+         class='block_left'>
+    <a href="${python: data['@id']}" style="font-size:20px;padding:0 10px;">${python: data['title']}</a>
+    <br>
+    <a href="${python: data['@id']}" class='read_more' >閱讀全文</a>
+</div>
+
+</metal:content-core>
+
+</body>
+</html>

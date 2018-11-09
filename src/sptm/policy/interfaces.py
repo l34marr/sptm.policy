@@ -11,3 +11,6 @@ class ISptmPolicyLayer(IDefaultBrowserLayer):
 class IHeadLineView(Interface):
     """Marker Interface"""
 
+class IRestView(Interface):
+    """Marker Interface"""
+
